@@ -1,0 +1,33 @@
+{
+  "name": "FocusBeing",
+  "version": "0.0.6",
+  "description": "数字人生成 CLI：凭 accessKeyId/accessKeySecret 调用后端 API，支持提交任务（MP3/MP4/文字→视频）与查询任务结果（orderNo）。后端地址支持环境变量 FocusBeing_api 或 FOCUSAVATAR_API；凭证支持 FOCUSAVATAR_* 与 ACCESS_KEY_*。不存储用户数据。",
+  "type": "python",
+  "script": "scripts/FocusBeing.py",
+  "parameters": {
+    "message": {
+      "type": "string",
+      "description": "可选测试或说明消息"
+    }
+  },
+  "triggers": [
+    "FocusBeing",
+    "数字人",
+    "数字人生成",
+    "AI数字人",
+    "视频生成",
+    "ai视频",
+    "语音合成",
+    "唇形同步"
+  ],
+  "credentials": {
+    "ACCESS_KEY_ID": "accessKeyId，控制台创建密钥获得",
+    "ACCESS_KEY_SECRET": "accessKeySecret，控制台创建密钥获得"
+  },
+  "instructionScope": [
+    "生成数字人视频（提交 MP3/MP4 地址与文字）",
+    "查询数字人任务结果（凭 orderNo）",
+    "调用 FocusBeing / 焦点数字人 / yunji 数字人 相关 API"
+  ],
+  "enabled": true
+}
