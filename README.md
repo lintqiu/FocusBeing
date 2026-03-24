@@ -19,7 +19,7 @@
 
 **安装完成后或首次使用前**，请先获取认证凭证：
 
-1. **注册账号**：前往控制台（如 [https://login.joycoreai.com/](https://login.joycoreai.com/) 或部署方提供的地址）注册。
+1. **注册账号**：前往控制台注册（示例：**[https://login.joycoreai.com/](https://yunji.focus-jd.cn)**；或部署方提供的其他入口，如 [https://login.joycoreai.com/](https://login.joycoreai.com/)）。
 2. **购买/开通**：按需完成购买或开通流程。
 3. **创建密钥**：在控制台创建密钥，复制 **accessKeyId** 和 **accessKeySecret**。
 
@@ -49,8 +49,12 @@
   export ACCESS_KEY_SECRET="你的accessKeySecret"
   ```
 
+  **Windows 上的 Git Bash / MSYS2 等类 Unix 终端**：与 Linux/macOS 相同，使用 `export`（勿在 PowerShell 中使用 `export`）。
+
   **Linux / macOS（永久）**：  
  将上面两行 `export` 写入 `~/.bashrc` 或 `~/.zshrc`，然后执行 `source ~/.bashrc` 或 `source ~/.zshrc`。
+
+  **别名（与上完全等价，可混用）**：亦支持 `FOCUSAVATAR_ACCESS_KEY_ID`、`FOCUSAVATAR_ACCESS_KEY_SECRET`（与 `ACCESS_KEY_ID` / `ACCESS_KEY_SECRET` 二选一或各取一侧组合均可）。
 
 请求认证通过请求头传递：`X-Access-Key-Id`、`X-Access-Key-Secret`。
 
@@ -60,6 +64,7 @@
 - 推荐使用环境变量方式，更加安全
 - 交互输入时，密钥直接传给 Python 读取，不会经过模型处理
 - 本工具不保存凭证到磁盘，仅在内存中使用后丢弃
+- 通过 **IDE「运行」** 或 **助手代跑** 时，常无法交互输入密钥；请在同一终端会话中设置环境变量，或在本机终端执行 `python scripts/FocusBeing.py`
 
 ---
 
@@ -93,7 +98,7 @@ npx skills add https://github.com/lintqiu/FocusBeing -s FocusBeing -y
 ```
 
 **首次安装完成后**：使用前请先前往指定地址获取 **accessKeyId** 与 **accessKeySecret**，否则无法调用接口。  
-→ 控制台地址（注册 → 购买/开通 → 创建密钥）：**[https://login.joycoreai.com/](https://login.joycoreai.com/)** 或部署方提供的同等地址。  
+→ 控制台入口（注册 → 购买/开通 → 创建密钥）：**[https://login.joycoreai.com/](https://yunji.focus-jd.cn)**；或部署方提供的同等地址（如 [https://login.joycoreai.com/](https://login.joycoreai.com/)）。  
 获取后可在下方「体验操作流程」中按提示输入，或设置环境变量免输入。
 
 安装后通过技能入口使用即可。
@@ -106,7 +111,7 @@ npx skills add https://github.com/lintqiu/FocusBeing -s FocusBeing -y
 
 | 步骤 | 说明 |
 |------|------|
-| **① 设置凭证** | **自动**：若已设置环境变量 `ACCESS_KEY_ID`、`ACCESS_KEY_SECRET`，无需输入。<br>**一步一步**：未设置时，按提示依次输入 **accessKeyId**、**accessKeySecret**（从控制台复制）。 |
+| **① 设置凭证** | **自动**：若已设置环境变量 `ACCESS_KEY_ID` + `ACCESS_KEY_SECRET`（或等价的 `FOCUSAVATAR_ACCESS_KEY_ID` + `FOCUSAVATAR_ACCESS_KEY_SECRET`），无需输入。<br>**一步一步**：未设置时，按提示依次输入 **accessKeyId**、**accessKeySecret**（从控制台复制）。 |
 | **② 选择模式** | **两种模式**：<br>• **[1] 提交任务（生成视频）**：走 FocusBeing 原流程，后续需输入 MP3、MP4、文字。<br>• **[2] 查询任务结果**：需提供任务单号 **orderNo**，仅查询状态与视频链接。 |
 | **③ 设置 MP3 地址** | 仅在选择「提交任务」时出现。一步输入 **MP3 路径或 URL**。 |
 | **④ 设置 MP4 地址** | 上一步完成后，一步输入 **MP4 路径或 URL**。 |
@@ -142,7 +147,7 @@ npx skills add https://github.com/lintqiu/FocusBeing -s FocusBeing -y
 **3. 权限与网络**
 
 - **无需系统级或 root/管理员权限**：以当前登录用户安装和运行即可，不需要以管理员或 root 执行。
-- **需要网络访问**：本技能会访问由环境变量 `FocusBeing_api`（或与脚本兼容的 `FocusBeing_api`）指定的后端地址（未设置时使用默认地址）。请确保本机能够访问该地址（防火墙、代理等允许出站访问）。
+- **需要网络访问**：本技能会访问由环境变量 **`FocusBeing_api`** 或 **`FOCUSAVATAR_API`** 指定的后端地址（未设置时使用默认 `https://yunji.focus-jd.cn`）。请确保本机能够访问该地址（防火墙、代理等允许出站访问）。
 
 ---
 
@@ -155,7 +160,7 @@ npx skills add https://github.com/lintqiu/FocusBeing -s FocusBeing -y
 1. **文件 → 设置 → 项目 → Python 解释器** → 「添加解释器」→ 选择本机已安装的 `python.exe`，或在仓库根目录执行 `python -m venv .venv` 后选择 `.venv\Scripts\python.exe`。
 2. 安装依赖：`pip install -r requirements.txt`（主要依赖为 `requests`）。
 
-凭证环境变量：**推荐使用** `ACCESS_KEY_ID` / `ACCESS_KEY_SECRET`。
+凭证环境变量：**推荐使用** `ACCESS_KEY_ID` / `ACCESS_KEY_SECRET`；亦支持 `FOCUSAVATAR_ACCESS_KEY_ID` / `FOCUSAVATAR_ACCESS_KEY_SECRET`（与脚本、skill.json 一致）。
 
 ---
 
@@ -172,7 +177,7 @@ npx skills add https://github.com/lintqiu/FocusBeing -s FocusBeing -y
 
 ## 后端 API 协议
 
-**BASE_URL**：由环境变量 `FocusBeing_api` 指定，默认示例：`https://yunji.focus-jd.cn`。
+**BASE_URL**：由环境变量 `FocusBeing_api` 或 `FOCUSAVATAR_API` 指定，默认：`https://yunji.focus-jd.cn`。
 
 **认证**：请求头  
 `X-Access-Key-Id`、`X-Access-Key-Secret`。
@@ -193,9 +198,9 @@ npx skills add https://github.com/lintqiu/FocusBeing -s FocusBeing -y
 
 ## 隐私说明
 
-- **数据归属**：本工具仅作为客户端调用方，**不存储、不收集**用户的 MP3/MP4 地址、文字内容或生成的视频。
-- **请求流向**：所有请求直接发往用户配置的后端服务（如 `FocusBeing_api`），数据处理与存储由该后端及所属方负责。
-- **凭证**：accessKeyId、accessKeySecret 仅用于当次请求的请求头，不写入磁盘、不上传到本技能仓库或第三方。
+- **工具角色**：本工具仅作为**客户端**，在您本机通过 HTTPS 将请求发往您配置的后端（`FocusBeing_api` / `FOCUSAVATAR_API` 或默认地址）。**不在本仓库、本技能目录或模型提供方处持久化**用户的 MP3/MP4 地址、合成文字、订单号、生成视频或访问密钥。
+- **凭证**：accessKeyId、accessKeySecret 由环境变量或交互输入进入**当前进程内存**，用于构造请求头；**不写入磁盘**、不上传到本技能仓库或无关第三方。通过助手/IDE 代跑时，优先使用环境变量，避免在非交互 stdin 下泄露或落空输入。
+- **业务数据去向**：您提交的地址、文字、orderNo 等将由**后端服务**处理；是否落库、日志与留存期限由**后端运营方**决定，**以后端及部署方公示的隐私政策、用户协议为准**；本 README 不能替代该等政策。
 - **合规**：用户需自行确保所提交内容符合当地法律法规，不侵犯第三方知识产权及其他权益。
 
 ---

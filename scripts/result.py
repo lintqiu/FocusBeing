@@ -10,18 +10,21 @@ import os
 
 API_ENDPOINT = (
     os.environ.get("FocusBeing_api")
+    or os.environ.get("FOCUSAVATAR_API")
     or "https://yunji.focus-jd.cn"
 )
 RESULT_URL = API_ENDPOINT.rstrip("/") + "/skill/api/api/result"
 
 
 def get_credentials():
-    """从环境变量或交互获取 accessKeyId 和 accessKeySecret"""
+    """从环境变量或交互获取 accessKeyId 和 accessKeySecret（与 FocusBeing.py 一致，支持 FOCUSAVATAR_*）"""
     access_key_id = (
-       os.environ.get("ACCESS_KEY_ID", "").strip()
+        os.environ.get("ACCESS_KEY_ID", "").strip()
+        or os.environ.get("FOCUSAVATAR_ACCESS_KEY_ID", "").strip()
     )
     access_key_secret = (
         os.environ.get("ACCESS_KEY_SECRET", "").strip()
+        or os.environ.get("FOCUSAVATAR_ACCESS_KEY_SECRET", "").strip()
     )
     if not access_key_id:
         access_key_id = input("accessKeyId（可设置 ACCESS_KEY_ID，直接回车跳过）: ").strip()

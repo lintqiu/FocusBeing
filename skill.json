@@ -1,7 +1,7 @@
 {
   "name": "FocusBeing",
-  "version": "0.0.6",
-  "description": "数字人生成 CLI：凭 accessKeyId/accessKeySecret 调用后端 API，支持提交任务（MP3/MP4/文字→视频）与查询任务结果（orderNo）。后端地址支持环境变量 FocusBeing_api 或 FOCUSAVATAR_API；凭证支持 FOCUSAVATAR_* 与 ACCESS_KEY_*。不存储用户数据。",
+  "version": "0.0.7",
+  "description": "数字人生成 CLI：凭 accessKeyId/accessKeySecret 调用后端 API，支持提交任务（MP3/MP4/文字→视频）与查询任务结果（orderNo）。后端地址支持环境变量 FocusBeing_api 或 FOCUSAVATAR_API；凭证支持 ACCESS_KEY_* 与 FOCUSAVATAR_ACCESS_KEY_*（等价可混用）。不持久化用户业务数据；请求发往用户配置之后端，以后端隐私政策为准。",
   "type": "python",
   "script": "scripts/FocusBeing.py",
   "parameters": {
@@ -21,8 +21,10 @@
     "唇形同步"
   ],
   "credentials": {
-    "ACCESS_KEY_ID": "accessKeyId，控制台创建密钥获得",
-    "ACCESS_KEY_SECRET": "accessKeySecret，控制台创建密钥获得"
+    "ACCESS_KEY_ID": "accessKeyId，控制台创建密钥获得（与 FOCUSAVATAR_ACCESS_KEY_ID 等价）",
+    "ACCESS_KEY_SECRET": "accessKeySecret（与 FOCUSAVATAR_ACCESS_KEY_SECRET 等价）",
+    "FOCUSAVATAR_ACCESS_KEY_ID": "可选，与 ACCESS_KEY_ID 二选一或混用",
+    "FOCUSAVATAR_ACCESS_KEY_SECRET": "可选，与 ACCESS_KEY_SECRET 二选一或混用"
   },
   "instructionScope": [
     "生成数字人视频（提交 MP3/MP4 地址与文字）",

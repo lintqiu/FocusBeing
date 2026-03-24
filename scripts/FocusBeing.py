@@ -22,9 +22,10 @@ import os
 
 # 获取密钥的引导地址（注册 → 购买 → 创建密钥，获取 accessKeyId 与 accessKeySecret）
 CREDENTIALS_GET_URL = "https://yunji.focus-jd.cn"
-# 与 README/SKILL 一致：优先 FocusBeing_api，兼容 FOCUSAVATAR_API
+# 与 README/SKILL/skill.json 一致：优先 FocusBeing_api，兼容 FOCUSAVATAR_API
 API_ENDPOINT = (
     os.environ.get("FocusBeing_api")
+    or os.environ.get("FOCUSAVATAR_API")
     or "https://yunji.focus-jd.cn"
 )
 
@@ -39,15 +40,29 @@ def print_credentials_guide():
     """安装/启动时提示用户获取 accessKeyId 与 accessKeySecret（体验流程 ① 设置凭证）"""
     print("\n" + "=" * 50)
     print("  📌 ① 设置凭证：使用前请先获取 accessKeyId 和 accessKeySecret")
-    print(f"  🔗 请前往：{CREDENTIALS_GET_URL}")
+    print(f"  🔗 请前往：https://login.joycoreai.com/")
     print()
     print("  1️⃣  前往上述地址 注册 账号")
     print("  2️⃣  完成 购买/开通")
     print("  3️⃣  在控制台 创建密钥，复制 accessKeyId 和 accessKeySecret")
     print()
-    print("  ✅ 推荐：设置环境变量免输入（模型不会接触密钥，更安全）：")
+    print("  ✅ 推荐：设置环境变量免输入（模型不会接触密钥，更安全）。不同客户按终端类型任选一种：")
+    print()
+    print("     【Linux / macOS / 自带终端（bash、zsh）】")
     print("     export ACCESS_KEY_ID=\"你的accessKeyId\"")
     print("     export ACCESS_KEY_SECRET=\"你的accessKeySecret\"")
+    print()
+    print("     【Windows 上的 Git Bash / MSYS2 等类 Unix 终端】（与上相同，用 export）")
+    print("     export ACCESS_KEY_ID=\"你的accessKeyId\"")
+    print("     export ACCESS_KEY_SECRET=\"你的accessKeySecret\"")
+    print()
+    print("     【Windows PowerShell】（勿用 export，请用 $env:）")
+    print("     $env:ACCESS_KEY_ID=\"你的accessKeyId\"")
+    print("     $env:ACCESS_KEY_SECRET=\"你的accessKeySecret\"")
+    print()
+    print("     【Windows CMD】（两行分别执行）")
+    print("     set ACCESS_KEY_ID=你的accessKeyId")
+    print("     set ACCESS_KEY_SECRET=你的accessKeySecret")
     print()
     print("  或在下方直接输入（本脚本直接读取，模型看不到您输入的密钥）：")
     print("=" * 50 + "\n")
@@ -92,9 +107,8 @@ def get_credentials():
     if not is_tty:
         print(
             "\n⚠️ 提示：当前 stdin 不是「交互式终端」（常见于 IDE 点「运行」、助手代跑、管道输入）。\n"
-            "   若下面无法输入密钥，请在本机 PowerShell 中运行本脚本，或先设置环境变量：\n"
-            "   $env:ACCESS_KEY_ID=\"你的accessKeyId\"; $env:ACCESS_KEY_SECRET=\"你的accessKeySecret\"\n"
-            "   （亦支持 FOCUSAVATAR_ACCESS_KEY_ID / FOCUSAVATAR_ACCESS_KEY_SECRET）\n"
+            "   若下面无法输入密钥，请在本机终端运行本脚本，或先在同一终端会话中设置环境变量（Linux/macOS/Git Bash 用 export；Windows PowerShell 用 $env:；见上方 ①）。\n"
+            "   亦支持 FOCUSAVATAR_ACCESS_KEY_ID / FOCUSAVATAR_ACCESS_KEY_SECRET。\n"
         )
 
     def _prompt_until_non_empty(label: str, field_name: str) -> str:
@@ -105,7 +119,7 @@ def get_credentials():
             except EOFError:
                 print(
                     "\n❌ 未读到输入（EOF）。请设置环境变量 ACCESS_KEY_ID / ACCESS_KEY_SECRET 后重试，"
-                    "或在 PowerShell 中运行：python scripts/FocusBeing.py"
+                    "或在本机终端运行：python scripts/FocusBeing.py"
                 )
                 sys.exit(1)
             if line:
@@ -115,10 +129,10 @@ def get_credentials():
             if not is_tty and empty_streak >= 3:
                 print(
                     "\n❌ 已连续多次空输入，多半是当前环境无法交互读键。请任选其一：\n"
-                    "   • 在 PowerShell / CMD 中直接运行：python scripts/FocusBeing.py\n"
-                    "   • 或先设置环境变量再运行：\n"
-                    "     $env:ACCESS_KEY_ID=\"你的accessKeyId\"\n"
-                    "     $env:ACCESS_KEY_SECRET=\"你的accessKeySecret\"\n"
+                    "   • 在本机终端直接运行：python scripts/FocusBeing.py\n"
+                    "   • 或先设置环境变量（与终端类型一致，见上方 ①）：\n"
+                    "     Linux/macOS/Git Bash: export ACCESS_KEY_ID=… ; export ACCESS_KEY_SECRET=…\n"
+                    "     Windows PowerShell: $env:ACCESS_KEY_ID=\"…\"; $env:ACCESS_KEY_SECRET=\"…\"\n"
                 )
                 sys.exit(1)
 
@@ -327,12 +341,14 @@ def run_query_flow(access_key_id: str, access_key_secret: str):
 
 
 def main():
+    get_credentials()
+
     access_key_id, access_key_secret = get_credentials()
 
     print("\n" + "=" * 50)
     print("       数字人生成工具")
     print("=" * 50)
-    print("  📌 提醒：使用前需要先前往 https://yunji.focus-jd.cn 获取 accessKeyId 和 accessKeySecret")
+    print("  📌 提醒：使用前需要先前往 https://login.joycoreai.com/ 获取 accessKeyId 和 accessKeySecret")
     print()
     print("  📌 ② 选择操作模式（两种模式）：")
     print("     [1] 提交任务（生成视频）— 走 FocusBeing 原流程")
